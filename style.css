@@ -1,0 +1,20 @@
+main{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    height: 400px;
+    width: 400px;
+}
+
+.display{
+    display: grid;
+    grid-column: 1 / 5;
+    border-style: dashed;
+}
+
+.ac{
+    grid-column: 1 / 4;
+}
+
+.zero{
+    grid-column: 1 / 3;
+}
