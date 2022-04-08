@@ -6,71 +6,104 @@ const allClearButton = document.querySelector('.ac')
 const display = document.querySelector('.display')
 const digits = document.querySelectorAll('.digit')
 const operators = document.querySelectorAll('.operator')
+const equal = document.querySelector('#equals')
 
-console.log(digits)
 digits.forEach((digit) => {
     digit.addEventListener('click',()=>{
-        displayDigit(digit.outerText)
+        appendDigit(digit.outerText)
+        displayScreen()
     })
 })
 
 operators.forEach((operator) => {
-    operator.addEventListener('click', (e)=> {
+    operator.addEventListener('click', ()=> {
         operend = operator.innerText
-        if(!firstValue){
+        if(firstValue && nextValue){
+            equals()
+            displayValue = ''
+        }
+        else if(!firstValue){
             firstValue = displayValue
             displayValue = ''
-        }
-        else if(firstValue && nextValue){
-            display.textContent = operate(firstValue,operend,nextValue)
-            firstValue = nextValue
-            nextValue = ''
-        }
+            }
         else{
             nextValue = displayValue
+            firstValue = operate(firstValue,operend,nextValue)
+            displayValue = firstValue
+            displayScreen()
             displayValue = ''
         }
-        console.log(operend,firstValue,nextValue)
+        console.log(firstValue,operend,nextValue)
     })
 })
 
 function add(a,b){
+    console.log(a+b)
     return a+b
 }
 
 function subtract(a,b){
+    console.log(a-b)
     return a-b
 }
 
 function multiply(a,b){
+    console.log(a*b)
     return a*b
 }
 
 function divide(a,b){
-    return a-b
+    console.log(a/b)
+    return a/b
 }
 
 function operate(a,o,b){
     if(o == '+'){
-        add(a,b)
+        return add(a,b)
     }
     else if(o == '-'){
-        subtract(a,b)
+        return subtract(a,b)
     }
     else if(o == '/'){
-        divide(a,b)
+        return divide(a,b)
     }
     else{
-        multiply(a,b)
+        return multiply(a,b)
     }
 }
 
 allClearButton.addEventListener('click',() => {
     displayValue = ''
+    firstValue = ''
+    nextValue = ''
     display.textContent = displayValue
 })
 
-function displayDigit(element){
+function appendDigit(element){
     displayValue += `${element}`
+}
+
+equal.addEventListener('click', () => {
+    if(!firstValue){
+        return;
+    }
+    else{
+        nextValue = displayValue
+        displayValue = operate(firstValue,operend,nextValue)
+        displayScreen()
+        firstValue = null
+        nextValue = null
+    }
+})
+
+function displayScreen(){
     display.textContent = displayValue
+}
+
+function equals(){
+    nextValue = displayValue
+    displayValue = operate(firstValue,operend,nextValue)
+    displayScreen()
+    firstValue = displayValue
+    nextValue = null
 }
