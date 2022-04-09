@@ -9,6 +9,7 @@ main{
     display: grid;
     grid-column: 1 / 5;
     border-style: dashed;
+    text-align: end;
 }
 
 .ac{
