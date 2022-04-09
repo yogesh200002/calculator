@@ -1,8 +1,10 @@
 let firstValue;
 let operend;
 let nextValue;
+let tempDisplay = ''
 let displayValue = '';
 const allClearButton = document.querySelector('.ac')
+const clear = document.querySelector('.c')
 const display = document.querySelector('.display')
 const digits = document.querySelectorAll('.digit')
 const operators = document.querySelectorAll('.operator')
@@ -10,6 +12,9 @@ const equal = document.querySelector('#equals')
 
 digits.forEach((digit) => {
     digit.addEventListener('click',()=>{
+        if(display.textContent == 0){
+            display.textContent = ''
+        }
         appendDigit(digit.outerText)
         displayScreen()
     })
@@ -17,69 +22,72 @@ digits.forEach((digit) => {
 
 operators.forEach((operator) => {
     operator.addEventListener('click', ()=> {
-        operend = operator.innerText
-        if(firstValue && nextValue){
-            equals()
-            displayValue = ''
-        }
-        else if(!firstValue){
+        if(!firstValue){
             firstValue = displayValue
-            displayValue = ''
-            }
-        else{
-            nextValue = displayValue
-            firstValue = operate(firstValue,operend,nextValue)
-            displayValue = firstValue
-            displayScreen()
+            operend = operator.innerText
             displayValue = ''
         }
-        console.log(firstValue,operend,nextValue)
+        else{
+            evaluate()
+            displayValue = ''
+            operend = operator.innerText
+        }
     })
 })
 
 function add(a,b){
-    console.log(a+b)
-    return a+b
+    return (a+b).toFixed(2)
 }
 
 function subtract(a,b){
-    console.log(a-b)
-    return a-b
+    return (a-b).toFixed(2)
 }
 
 function multiply(a,b){
-    console.log(a*b)
-    return a*b
+    return (a*b).toFixed(2)
 }
 
 function divide(a,b){
-    console.log(a/b)
-    return a/b
+    return (a/b).toFixed(2)
 }
 
 function operate(a,o,b){
     if(o == '+'){
-        return add(a,b)
+        return add(parseInt(a),parseInt(b))
     }
     else if(o == '-'){
-        return subtract(a,b)
+        return subtract(parseInt(a),parseInt(b))
     }
     else if(o == '/'){
-        return divide(a,b)
+        return divide(parseInt(a),parseInt(b))
+    }
+    else if(o == '*'){
+        return multiply(parseInt(a),parseInt(b))
     }
     else{
-        return multiply(a,b)
+        return;
     }
 }
 
+clear.addEventListener('click', () => {
+    displayValue = displayValue.slice(0,-1)
+    displayScreen()
+    if(displayValue.length == 0){
+        return;
+    }
+})
+
 allClearButton.addEventListener('click',() => {
-    displayValue = ''
-    firstValue = ''
-    nextValue = ''
+    displayValue = '0'
+    firstValue = null
+    nextValue = null
     display.textContent = displayValue
 })
 
 function appendDigit(element){
+    if(displayValue[0] == 0){
+        displayValue = ''
+    }
     displayValue += `${element}`
 }
 
@@ -88,11 +96,8 @@ equal.addEventListener('click', () => {
         return;
     }
     else{
-        nextValue = displayValue
-        displayValue = operate(firstValue,operend,nextValue)
-        displayScreen()
+        evaluate()
         firstValue = null
-        nextValue = null
     }
 })
 
@@ -100,10 +105,19 @@ function displayScreen(){
     display.textContent = displayValue
 }
 
-function equals(){
-    nextValue = displayValue
-    displayValue = operate(firstValue,operend,nextValue)
-    displayScreen()
-    firstValue = displayValue
-    nextValue = null
+function evaluate(){
+    if(!nextValue){
+        nextValue = displayValue
+        displayValue = operate(firstValue,operend,nextValue)
+        displayScreen()
+        firstValue = displayValue
+        nextValue = null
+    }
 }
+
+window.addEventListener('keydown', (e)=> {
+    if(e.key >= 0 && e.key <= 9){
+        appendDigit(e.key)
+        displayScreen()
+    }
+})
