@@ -1,14 +1,15 @@
 let firstValue;
 let operend;
 let nextValue;
-let tempDisplay = ''
 let displayValue = '';
+let result;
 const allClearButton = document.querySelector('.ac')
 const clear = document.querySelector('.c')
 const display = document.querySelector('.display')
 const digits = document.querySelectorAll('.digit')
 const operators = document.querySelectorAll('.operator')
 const equal = document.querySelector('#equals')
+const dotButton = document.querySelector('.dot')
 
 digits.forEach((digit) => {
     digit.addEventListener('click',()=>{
@@ -19,6 +20,19 @@ digits.forEach((digit) => {
         displayScreen()
     })
 })
+
+function operatorKeys(e){
+    if(!firstValue){
+        firstValue = displayValue
+        operend = e.key
+        displayValue = ''
+    }
+    else{
+        evaluate()
+        displayValue = ''
+        operend = e.key
+    }
+}
 
 operators.forEach((operator) => {
     operator.addEventListener('click', ()=> {
@@ -36,46 +50,75 @@ operators.forEach((operator) => {
 })
 
 function add(a,b){
-    return (a+b).toFixed(2)
+    a = Number(`${a}`)
+    b = Number(`${b}`)
+    if(Number.isInteger(a) && Number.isInteger(b)){
+        result = parseInt(a)+parseInt(b)
+        return(result)
+    }
+    else{
+        result = parseFloat(a)+parseFloat(b)
+        return(result.toFixed(2))
+    }
 }
 
 function subtract(a,b){
-    return (a-b).toFixed(2)
+    result = a - b
+    if(!Number.isInteger(result)){
+        return result.toFixed(2)
+    }
+    else{
+        return(result)
+    }
 }
 
 function multiply(a,b){
-    return (a*b).toFixed(2)
+    result = a*b
+    if(!Number.isInteger(result)){
+        return result.toFixed(2)
+    }
+    else{
+        return(result)
+    }
 }
 
 function divide(a,b){
-    return (a/b).toFixed(2)
+    result = a / b
+    if(!Number.isInteger(result)){
+        return result.toFixed(2)
+    }
+    else{
+        return(result)
+    }
 }
 
 function operate(a,o,b){
     if(o == '+'){
-        return add(parseInt(a),parseInt(b))
+        return add(a,b)
     }
     else if(o == '-'){
-        return subtract(parseInt(a),parseInt(b))
+        return subtract(a,b)
     }
     else if(o == '/'){
-        return divide(parseInt(a),parseInt(b))
+        return divide(a,b)
     }
     else if(o == '*'){
-        return multiply(parseInt(a),parseInt(b))
+        return multiply(a,b)
     }
     else{
         return;
     }
 }
 
-clear.addEventListener('click', () => {
+function backSpace(){
     displayValue = displayValue.slice(0,-1)
     displayScreen()
     if(displayValue.length == 0){
         return;
     }
-})
+}   
+
+clear.addEventListener('click',backSpace)
 
 allClearButton.addEventListener('click',() => {
     displayValue = '0'
@@ -91,7 +134,8 @@ function appendDigit(element){
     displayValue += `${element}`
 }
 
-equal.addEventListener('click', () => {
+
+function enter(){
     if(!firstValue){
         return;
     }
@@ -99,7 +143,9 @@ equal.addEventListener('click', () => {
         evaluate()
         firstValue = null
     }
-})
+}
+
+equal.addEventListener('click', enter)
 
 function displayScreen(){
     display.textContent = displayValue
@@ -120,4 +166,31 @@ window.addEventListener('keydown', (e)=> {
         appendDigit(e.key)
         displayScreen()
     }
+    else if(e.key == '.'){
+        dot()
+    }
+    else if(e.key == 'Backspace'){
+        backSpace()
+    }
+    else if(e.key == 'Enter'){
+        enter()
+    }
+    else if(e.key == '*' || e.key == '-' || e.key == '+' || e.key == '/' ){
+        operatorKeys(e)
+    }
+    else{
+        return;
+    }
 })
+
+function dot(){
+    if(!displayValue.includes('.')){
+        appendDigit('.')
+        displayScreen()
+    }
+    else{
+        return;
+    }
+}
+
+dotButton.addEventListener('click',dot)
