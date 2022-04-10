@@ -15,7 +15,3 @@ main{
 .ac{
     grid-column: 1 / 4;
 }
-
-#zero{
-    grid-column: 1 / 3;
-}
