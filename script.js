@@ -5,7 +5,8 @@ let displayValue = '';
 let result;
 const allClearButton = document.querySelector('.ac')
 const clear = document.querySelector('.c')
-const display = document.querySelector('.display')
+const displayCalculation = document.querySelector('.calculation')
+const displayResult = document.querySelector('.result')
 const digits = document.querySelectorAll('.digit')
 const operators = document.querySelectorAll('.operator')
 const equal = document.querySelector('#equals')
@@ -13,8 +14,8 @@ const dotButton = document.querySelector('.dot')
 
 digits.forEach((digit) => {
     digit.addEventListener('click',()=>{
-        if(display.textContent == 0){
-            display.textContent = ''
+        if(displayResult.textContent == 0){
+            displayResult.textContent = ''
         }
         appendDigit(digit.outerText)
         displayScreen()
@@ -39,10 +40,12 @@ operators.forEach((operator) => {
         if(!firstValue){
             firstValue = displayValue
             operend = operator.innerText
+            displayCalculationScreen()
             displayValue = ''
         }
         else{
             evaluate()
+            displayCalculationScreen()
             displayValue = ''
             operend = operator.innerText
         }
@@ -124,7 +127,8 @@ allClearButton.addEventListener('click',() => {
     displayValue = '0'
     firstValue = null
     nextValue = null
-    display.textContent = displayValue
+    displayResult.textContent = displayValue
+    displayCalculation.textContent = ''
 })
 
 function appendDigit(element){
@@ -148,13 +152,18 @@ function enter(){
 equal.addEventListener('click', enter)
 
 function displayScreen(){
-    display.textContent = displayValue
+    displayResult.textContent = displayValue
+}
+
+function displayCalculationScreen(){
+    displayCalculation.textContent = `${firstValue}`+' '+`${operend}`
 }
 
 function evaluate(){
     if(!nextValue){
         nextValue = displayValue
         displayValue = operate(firstValue,operend,nextValue)
+        displayCalculation.textContent = `${firstValue}`+' '+`${operend}`+' '+`${nextValue}`+' '+'='+' '
         displayScreen()
         firstValue = displayValue
         nextValue = null
