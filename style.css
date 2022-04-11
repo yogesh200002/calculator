@@ -1,17 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+
+body{
+    font-family: 'Fredoka One', cursive;
+    background-color: beige;
+}
+
+h1{
+    text-align: center;
+    margin: 0;
+    margin-bottom: 100px;
+}
+
 main{
-    display: grid;
-    grid-template-columns: repeat(4,1fr);
-    height: 400px;
-    width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.calculator{
+    border-radius: 8px;
+    padding: 20px;
+    border-style: solid;
+    background-color: rgb(247, 120, 120);
 }
 
 .display{
     display: grid;
+    height: fit-content;
+    width: 385px;
+    margin-bottom: 25px;
     grid-column: 1 / 5;
-    border-style: dashed;
+    border-style: solid;
+    border-radius: 8px;
     text-align: end;
+    padding: 5px;
+    background-color: antiquewhite;
+    font-size: large;
+    font-weight: 500px;
+}
+
+.calculation{
+    min-height: 25px;
+}
+
+button{
+    background: rgb(162, 236, 236);
+    border-radius: 8px;
+    font-size: large;
+    font-weight: bold;
+    font-family: 'Audiowide', cursive;
+}
+
+button:active{
+    background-color: whitesmoke;
+}
+
+.buttons{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    height: 400px;
+    width: 400px;
+    gap: 15px;
 }
 
 .ac{
     grid-column: 1 / 4;
+}
+
+footer{
+    display: flex;
+    font-size: larger;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    justify-content: center;
 }
