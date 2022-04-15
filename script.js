@@ -45,9 +45,9 @@ operators.forEach((operator) => {
         }
         else{
             evaluate()
-            displayCalculationScreen()
             displayValue = ''
             operend = operator.innerText
+            displayCalculationScreen()
         }
     })
 })
