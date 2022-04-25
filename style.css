@@ -1,9 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
 
+html{
+    min-height: 100%;
+}
+
 body{
     font-family: 'Fredoka One', cursive;
     background-color: beige;
+    min-width: 500px;
+    position: relative;
+    min-height: 100%;
 }
 
 h1{
@@ -72,9 +79,10 @@ button:active{
 footer{
     display: flex;
     font-size: larger;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     right: 0;
     left: 0;
     justify-content: center;
+    width: 100%;
 }
